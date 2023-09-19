@@ -4,7 +4,7 @@ import simpleaudio as sa
 
 # Sample location
 
-wave_obj = sa.WaveObject.from_wave_file("../../Assets/snare.wav")
+wave_obj = sa.WaveObject.from_wave_file("../Assets/snare.wav")
 
 # Define sample playing function
 
