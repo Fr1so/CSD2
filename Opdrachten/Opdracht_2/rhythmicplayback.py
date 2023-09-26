@@ -28,3 +28,14 @@ for amount in range(numPlaybackTimes):
         
 print(noteDurationsList)
 
+## Note Time Duration Calculation
+
+# Enumerates through note length list of user and transforms to length appropriate to bpm of user #
+
+timeDurations = []
+
+for i in range(len(noteDurationsList)):
+    timeDurations.append(quarterNote * noteDurationsList[i])
+
+print(timeDurations) 
+
