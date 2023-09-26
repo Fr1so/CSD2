@@ -39,3 +39,14 @@ for i in range(len(noteDurationsList)):
 
 print(timeDurations) 
 
+## Sample play
+
+# Define location 
+
+wave_obj = sa.WaveObject.from_wave_file("../Assets/kick_16bit.wav")
+
+# Loop through timeDurations list playing the sample while sleeping based on time given by user input
+
+for i in timeDurations:
+    wave_obj.play()
+    time.sleep(i)
