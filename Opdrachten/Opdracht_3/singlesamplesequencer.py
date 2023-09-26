@@ -40,7 +40,7 @@ for amount in range(numPlaybackTimes):
     noteDuration = (float(input("Please enter the duration of the notes as a float (for example: 1.0 = Quarternote, 0.5 = Eightnote): ")))   
     noteDurationsList.append(noteDuration)
         
-print(noteDurationsList)
+print("noteDurationsList: ", noteDurationsList)
 
 
 ## Note Time Duration Calculation
@@ -52,7 +52,7 @@ timeDurations = []
 for i in range(len(noteDurationsList)):
     timeDurations.append(quarterNote * noteDurationsList[i])
 
-print(timeDurations) 
+print("timeDurations: ", timeDurations) 
 
 ## Sample play
 
