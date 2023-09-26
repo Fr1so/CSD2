@@ -3,7 +3,9 @@
 import simpleaudio as sa
 import time
 
+
 ## User Input
+
 
 # Ask the user for amount of times to play back sound
 
@@ -45,6 +47,7 @@ print("noteDurationsList: ", noteDurationsList)
 
 ## Note Time Duration Calculation
 
+
 # Enumerates through note length list of user and transforms to length appropriate to bpm of user #
 
 timeDurations = []
@@ -54,14 +57,18 @@ for i in range(len(noteDurationsList)):
 
 print("timeDurations: ", timeDurations) 
 
-## Sample play
 
-# Define location 
+## Timestamp Calculation
 
-wave_obj = sa.WaveObject.from_wave_file("../../Assets/kick_16bit.wav")
+# Create a list of timestamps based on time durations
 
-# Loop through timeDurations list playing the sample while sleeping based on time given by user input
+timestamps = []
 
-for i in timeDurations:
-    wave_obj.play()
-    time.sleep(i)
+timestampSum = 0
+
+for singleTimeDuration in timeDurations:
+    timestamps.append(timestampSum)
+    timestampSum = timestampSum + singleTimeDuration
+
+print("Timestamps: ", timestamps)
+
