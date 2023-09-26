@@ -11,4 +11,23 @@ numPlaybackTimes = int(input("Please enter the amount of times you would like fo
 
 print(numPlaybackTimes, "times.")
 
-# Ask the user for bpm
+# Ask the user for bpm (default is 120.0)
+
+bpm = 120.0
+
+correctBpmInput = False
+
+while (not correctBpmInput):
+    userBpm = (input("Default bpm is 120.0, please enter the bpm to change it or press enter to keep default bpm: "))
+    if not userBpm:
+        correctBpmInput = True
+        print("Bpm is still", bpm)
+    else:
+        try:
+            bpm = float(userBpm)
+            correctBpmInput = True
+            print("Bpm is now", bpm)
+        except:
+            print("Incorrect input, please enter a bpm.")
+
+quarterNote = (60.0 / bpm)
