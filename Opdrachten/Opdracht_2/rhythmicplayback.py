@@ -43,7 +43,7 @@ print(timeDurations)
 
 # Define location 
 
-wave_obj = sa.WaveObject.from_wave_file("../Assets/kick_16bit.wav")
+wave_obj = sa.WaveObject.from_wave_file("../../Assets/kick_16bit.wav")
 
 # Loop through timeDurations list playing the sample while sleeping based on time given by user input
 
