@@ -72,3 +72,47 @@ for singleTimeDuration in timeDurations:
 
 print("Timestamps: ", timestamps)
 
+## Sample play
+
+
+# Define location 
+
+wave_obj = sa.WaveObject.from_wave_file("../../Assets/kick_16bit.wav")
+
+# Loop through timeDurations list playing the sample while sleeping based on time given by user input
+
+# Save current time
+
+timeZero = time.time()
+print("Time Zero: ", timeZero)
+
+# Save first timestamp (always 0 in timestamps list)
+
+nextTimestamp = timestamps.pop(0)
+
+# Iterate through timestamp sequence and play sample
+
+while True:
+    
+    currentTime = time.time() - timeZero
+
+    # Play sample if next timestamp is passed
+
+    if (currentTime >= nextTimestamp):
+        wave_obj.play()
+
+        # Save new timestamp if timestamps list is not empty
+
+        if not timestamps:
+            break
+        else:
+            nextTimestamp = timestamps.pop(0)
+        
+    # Wait for processor
+
+    time.sleep(0.001)
+
+
+# Ring out last sample before ending  
+
+time.sleep(timeDurations[-1])
