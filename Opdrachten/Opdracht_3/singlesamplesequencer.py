@@ -42,3 +42,26 @@ for amount in range(numPlaybackTimes):
         
 print(noteDurationsList)
 
+
+## Note Time Duration Calculation
+
+# Enumerates through note length list of user and transforms to length appropriate to bpm of user #
+
+timeDurations = []
+
+for i in range(len(noteDurationsList)):
+    timeDurations.append(quarterNote * noteDurationsList[i])
+
+print(timeDurations) 
+
+## Sample play
+
+# Define location 
+
+wave_obj = sa.WaveObject.from_wave_file("../../Assets/kick_16bit.wav")
+
+# Loop through timeDurations list playing the sample while sleeping based on time given by user input
+
+for i in timeDurations:
+    wave_obj.play()
+    time.sleep(i)
