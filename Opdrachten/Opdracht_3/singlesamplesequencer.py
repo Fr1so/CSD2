@@ -39,7 +39,7 @@ quarterNote = (60.0 / bpm)
 noteDurationsList = []
 
 for amount in range(numPlaybackTimes):
-    noteDuration = (float(input("Please enter the duration of the notes as a float (for example: 1.0 = Quarternote, 0.5 = Eightnote): ")))   
+    noteDuration = float(input("Please enter the duration of the notes as a float (for example: 1.0 = Quarternote, 0.5 = Eightnote): "))   
     noteDurationsList.append(noteDuration)
         
 print("noteDurationsList: ", noteDurationsList)
@@ -48,7 +48,7 @@ print("noteDurationsList: ", noteDurationsList)
 ## Note Time Duration Calculation
 
 
-# Enumerates through note length list of user and transforms to length appropriate to bpm of user #
+# Enumerates through note length list of user and transforms to length appropriate to bpm of user
 
 timeDurations = []
 
