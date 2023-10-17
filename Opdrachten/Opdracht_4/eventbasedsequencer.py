@@ -61,12 +61,11 @@ for amount in range(numPlaybackTimes):
             print("Please enter a float (an unwhole number, with a dot, not a comma).")
         else:
             break
-        
+
 print("noteDurationsList: ", noteDurationsList)
 
 
 ## Note Time Duration Calculation
-
 
 # Enumerates through note length list of user and transforms to length appropriate to bpm of user
 
@@ -114,7 +113,7 @@ while True:
     # Play sample if next timestamp is passed
 
     if (currentTime >= nextTimestamp):
-        kick.play()
+        snare.play()
 
         # Save new timestamp if timestamps list is not empty
 
