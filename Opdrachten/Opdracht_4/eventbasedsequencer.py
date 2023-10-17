@@ -6,6 +6,7 @@ import time
 
 ## User Input
 
+print("Welcome to Friso's single sample sequencer.")
 
 # Ask the user for amount of times to play back sound
 
@@ -32,14 +33,14 @@ while (not correctBpmInput):
         except:
             print("Incorrect input, please enter a bpm.")
 
-quarterNote = (60.0 / bpm)
+sixteenthNote = ((60.0 / bpm) /2)
 
 # Ask the user for the specific duration of individual notes
 
 noteDurationsList = []
 
 for amount in range(numPlaybackTimes):
-    noteDuration = float(input("Please enter the duration of the notes as a float (for example: 1.0 = Quarternote, 0.5 = Eightnote): "))   
+    noteDuration = float(input("Please enter the duration of the notes as a float (for example: 1.0 = Quarter note, 0.5 = Eight note, 0.25 = Sixteenth note): "))   
     noteDurationsList.append(noteDuration)
         
 print("noteDurationsList: ", noteDurationsList)
@@ -53,7 +54,7 @@ print("noteDurationsList: ", noteDurationsList)
 timeDurations = []
 
 for i in range(len(noteDurationsList)):
-    timeDurations.append(quarterNote * noteDurationsList[i])
+    timeDurations.append(sixteenthNote * noteDurationsList[i])
 
 print("timeDurations: ", timeDurations) 
 
@@ -77,7 +78,9 @@ print("Timestamps: ", timestamps)
 
 # Define location 
 
-wave_obj = sa.WaveObject.from_wave_file("../../Assets/kick_16bit.wav")
+kick =  sa.WaveObject.from_wave_file("../../Assets/kick_16bit.wav")
+snare =  sa.WaveObject.from_wave_file("../../Assets/snare_16bit.wav")
+hihat =  sa.WaveObject.from_wave_file("../../Assets/hihat_16bit.wav")
 
 # Loop through timeDurations list playing the sample while sleeping based on time given by user input
 
@@ -99,7 +102,7 @@ while True:
     # Play sample if next timestamp is passed
 
     if (currentTime >= nextTimestamp):
-        wave_obj.play()
+        kick.play()
 
         # Save new timestamp if timestamps list is not empty
 
