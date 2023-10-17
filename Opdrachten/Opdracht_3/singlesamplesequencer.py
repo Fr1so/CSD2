@@ -79,8 +79,6 @@ print("Timestamps: ", timestamps)
 # Define location 
 
 kick =  sa.WaveObject.from_wave_file("../../Assets/kick_16bit.wav")
-snare =  sa.WaveObject.from_wave_file("../../Assets/snare_16bit.wav")
-hihat =  sa.WaveObject.from_wave_file("../../Assets/hihat_16bit.wav")
 
 # Loop through timeDurations list playing the sample while sleeping based on time given by user input
 
