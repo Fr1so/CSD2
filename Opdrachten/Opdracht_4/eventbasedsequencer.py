@@ -61,6 +61,7 @@ for amount in range(numPlaybackTimes):
             print("Please enter a float (an unwhole number, with a dot, not a comma).")
         else:
             break
+        
 print("noteDurationsList: ", noteDurationsList)
 
 
