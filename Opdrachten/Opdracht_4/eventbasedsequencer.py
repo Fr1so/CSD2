@@ -4,15 +4,28 @@ import simpleaudio as sa
 import time
 
 
+## Sample locations 
+
+kick =  sa.WaveObject.from_wave_file("../../Assets/kick_16bit.wav")
+snare =  sa.WaveObject.from_wave_file("../../Assets/snare_16bit.wav")
+hihat =  sa.WaveObject.from_wave_file("../../Assets/hihat_16bit.wav")
+
+
 ## User Input
 
 print("Welcome to Friso's single sample sequencer.")
 
 # Ask the user for amount of times to play back sound
 
-numPlaybackTimes = int(input("Please enter the amount of times you would like for the sample to be played as an integer: "))
+while True:
+    try:
+        numPlaybackTimes = int(input("Please enter the amount of times you would like for the sample to be played as an integer: "))
+    except ValueError:
+        print("Please enter an integer (a whole number).")
+    else:
+        break
 
-print(numPlaybackTimes, "times.")
+print("Sample will be played", numPlaybackTimes, "times.")
 
 # Ask the user for bpm (default is 120.0)
 
@@ -40,9 +53,14 @@ sixteenthNote = ((60.0 / bpm) /2)
 noteDurationsList = []
 
 for amount in range(numPlaybackTimes):
-    noteDuration = float(input("Please enter the duration of the notes as a float (for example: 1.0 = Quarter note, 0.5 = Eight note, 0.25 = Sixteenth note): "))   
-    noteDurationsList.append(noteDuration)
-        
+    while True:
+        try:
+            noteDuration = float(input("Please enter the duration of the notes as a float (for example: 1.0 = Quarter note, 0.5 = Eight note, 0.25 = Sixteenth note): "))   
+            noteDurationsList.append(noteDuration)
+        except ValueError:
+            print("Please enter a float (an unwhole number, with a dot, not a comma).")
+        else:
+            break
 print("noteDurationsList: ", noteDurationsList)
 
 
@@ -74,13 +92,6 @@ for singleTimeDuration in timeDurations:
 print("Timestamps: ", timestamps)
 
 ## Sample play
-
-
-# Define location 
-
-kick =  sa.WaveObject.from_wave_file("../../Assets/kick_16bit.wav")
-snare =  sa.WaveObject.from_wave_file("../../Assets/snare_16bit.wav")
-hihat =  sa.WaveObject.from_wave_file("../../Assets/hihat_16bit.wav")
 
 # Loop through timeDurations list playing the sample while sleeping based on time given by user input
 
