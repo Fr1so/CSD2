@@ -6,6 +6,7 @@ import time
 
 ## User Input
 
+print("Welcome to Friso's single sample sequencer.")
 
 # Ask the user for amount of times to play back sound
 
@@ -32,14 +33,14 @@ while (not correctBpmInput):
         except:
             print("Incorrect input, please enter a bpm.")
 
-quarterNote = (60.0 / bpm)
+sixteenthNote = ((60.0 / bpm) /2)
 
 # Ask the user for the specific duration of individual notes
 
 noteDurationsList = []
 
 for amount in range(numPlaybackTimes):
-    noteDuration = float(input("Please enter the duration of the notes as a float (for example: 1.0 = Quarternote, 0.5 = Eightnote): "))   
+    noteDuration = float(input("Please enter the duration of the notes as a float (for example: 1.0 = Quarter note, 0.5 = Eight note, 0.25 = Sixteenth note): "))   
     noteDurationsList.append(noteDuration)
         
 print("noteDurationsList: ", noteDurationsList)
@@ -53,7 +54,7 @@ print("noteDurationsList: ", noteDurationsList)
 timeDurations = []
 
 for i in range(len(noteDurationsList)):
-    timeDurations.append(quarterNote * noteDurationsList[i])
+    timeDurations.append(sixteenthNote * noteDurationsList[i])
 
 print("timeDurations: ", timeDurations) 
 
