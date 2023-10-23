@@ -1,16 +1,16 @@
 ## Welcome to Friso van Beek's Irregular Beat Generator
 ## This is the code for the final assignment of CSD2a, a course given by the M&T study of HKU
 
-
-## Libraries
+###############
+## Libraries ##
 
 import simpleaudio as sa
 import time
 import random
-# from midiutil import MIDIFile
 
 
-## Sample locations 
+######################
+## Sample locations ##
 
 kick =  sa.WaveObject.from_wave_file("../Assets/kick_16bit.wav")
 snare =  sa.WaveObject.from_wave_file("../Assets/snare_16bit.wav")
@@ -18,7 +18,9 @@ hihat =  sa.WaveObject.from_wave_file("../Assets/hihat_16bit.wav")
 
 instruments = kick, snare, hihat
 
-## User Input
+
+################
+## User Input ##
 
 print("Welcome to Friso's single sample sequencer.\n")
 
@@ -71,8 +73,8 @@ for amount in range(numPlaybackTimes):
 
 print("noteDurationsList: \n", noteDurationsList)
 
-
-## Note Time Duration Calculation and Timestamp Calculation
+##############################################################
+## Note Time Duration Calculation and Timestamp Calculation ##
 
 # Enumerates through note length list of user and transforms to length appropriate to bpm of user
 # Duration of 1 gets converted to being a sixteenth note, instead of a quarter note.
@@ -105,7 +107,8 @@ ts16thToTsTime(timestamps16th)
 
 print("tsTime: \n", tsTime)
 
-## Event generation
+######################
+## Event generatio n##
 
 # Creating events based on timestamps and instruments
 
@@ -119,8 +122,8 @@ def eventCreator(x_tsTime, instrument):
 
 eventCreator(tsTime, instruments)
 
-
-## Sample play
+#################
+## Sample play ##
 
 # Loop through eventList list playing the samples
 
