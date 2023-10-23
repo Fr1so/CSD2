@@ -1,8 +1,14 @@
+## Welcome to Friso van Beek's Irregular Beat Generator
+## This is the code for the final assignment of CSD2a, a course given by the M&T study of HKU
+
+
 ## Libraries
 
 import simpleaudio as sa
 import time
 import random
+
+
 
 
 ## Sample locations 
