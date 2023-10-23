@@ -10,6 +10,8 @@ kick =  sa.WaveObject.from_wave_file("../../Assets/kick_16bit.wav")
 snare =  sa.WaveObject.from_wave_file("../../Assets/snare_16bit.wav")
 hihat =  sa.WaveObject.from_wave_file("../../Assets/hihat_16bit.wav")
 
+instruments = kick, snare, hihat
+
 
 ## User Input
 
@@ -46,7 +48,7 @@ while (not correctBpmInput):
         except:
             print("Incorrect input, please enter a bpm.")
 
-sixteenthNote = ((60.0 / bpm) /2)
+sixteenthNote = ((60 /bpm) / 4)
 
 # Ask the user for the specific duration of individual notes
 
@@ -65,31 +67,32 @@ for amount in range(numPlaybackTimes):
 print("noteDurationsList: ", noteDurationsList)
 
 
-## Note Time Duration Calculation
+## Note Time Duration Calculation and Timestamp Calculation
 
 # Enumerates through note length list of user and transforms to length appropriate to bpm of user
 
-timeDurations = []
-
-for i in range(len(noteDurationsList)):
-    timeDurations.append(sixteenthNote * noteDurationsList[i])
-
-print("timeDurations: ", timeDurations) 
-
-
-## Timestamp Calculation
-
 # Create a list of timestamps based on time durations
 
-timestamps = []
+timestamps16th = []
 
-timestampSum = 0
+def durationsToTimestamps16th(noteDurationsList):
+    
+    timestamps16thSum = 0    
+    timestamps16th.append(0)
 
-for singleTimeDuration in timeDurations:
-    timestamps.append(timestampSum)
-    timestampSum = timestampSum + singleTimeDuration
+    for i in range(len(noteDurationsList)-1):
+        timestamps16thSum = timestamps16thSum + noteDurationsList[i]
+        timestamps16th.append(timestamps16thSum)
+    
+durationsToTimestamps16th(noteDurationsList)
 
-print("Timestamps: ", timestamps)
+print("Timestamps: ", timestamps16th)
+
+
+## Event generation
+
+# Creating events based on timestamps and instruments
+
 
 ## Sample play
 
@@ -102,7 +105,7 @@ print("Time Zero: ", timeZero)
 
 # Save first timestamp (always 0 in timestamps list)
 
-nextTimestamp = timestamps.pop(0)
+nextTimestamp = timestamps16th.pop(0)
 
 # Iterate through timestamp sequence and play sample
 
@@ -117,10 +120,10 @@ while True:
 
         # Save new timestamp if timestamps list is not empty
 
-        if not timestamps:
+        if not timestamps16th:
             break
         else:
-            nextTimestamp = timestamps.pop(0)
+            nextTimestamp = timestamps16th.pop(0)
         
     # Wait for processor
 
@@ -129,4 +132,4 @@ while True:
 
 # Ring out last sample before ending  
 
-time.sleep(timeDurations[-1])
+time.sleep(1)
