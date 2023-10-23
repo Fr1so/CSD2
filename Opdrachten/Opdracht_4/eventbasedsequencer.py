@@ -2,6 +2,7 @@
 
 import simpleaudio as sa
 import time
+import random
 
 
 ## Sample locations 
@@ -48,7 +49,7 @@ while (not correctBpmInput):
         except:
             print("Incorrect input, please enter a bpm.")
 
-sixteenthNote = ((60 /bpm) / 4)
+sixteenthNote = (15 / bpm)
 
 # Ask the user for the specific duration of individual notes
 
@@ -70,42 +71,65 @@ print("noteDurationsList: ", noteDurationsList)
 ## Note Time Duration Calculation and Timestamp Calculation
 
 # Enumerates through note length list of user and transforms to length appropriate to bpm of user
-
+# Duration of 1 gets converted to being a sixteenth note, instead of a quarter note.
 # Create a list of timestamps based on time durations
 
 timestamps16th = []
 
-def durationsToTimestamps16th(noteDurationsList):
+def durationsToTimestamps16th(x_noteDurationsList):
     
     timestamps16thSum = 0    
     timestamps16th.append(0)
 
-    for i in range(len(noteDurationsList)-1):
-        timestamps16thSum = timestamps16thSum + noteDurationsList[i]
+    for i in range(len(x_noteDurationsList)-1):
+        timestamps16thSum = timestamps16thSum + (x_noteDurationsList[i] * 4)
         timestamps16th.append(timestamps16thSum)
     
 durationsToTimestamps16th(noteDurationsList)
 
 print("Timestamps: ", timestamps16th)
 
+# Convert 16th timestamps to actual time based on user inputted bpm
+
+tsTime = []
+
+def ts16thToTsTime(timestamps16th):
+    for ts in timestamps16th:
+        tsTime.append(sixteenthNote * ts)
+    
+ts16thToTsTime(timestamps16th)
+
+print("tsTime: ", tsTime)
 
 ## Event generation
 
 # Creating events based on timestamps and instruments
 
+eventList = []
+
+# Create a random list based on instrument variable with a given timestamp from tsTime list
+
+def eventCreator(x_tsTime, instrument):
+    for i in range(len(x_tsTime)):
+        eventList.append({'timestamp': x_tsTime[i], 'instrument': instrument[random.randint(0,2)]})
+
+eventCreator(tsTime, instruments)
+
+print('eventList: ', eventList)
+
 
 ## Sample play
 
-# Loop through timeDurations list playing the sample while sleeping based on time given by user input
+# Loop through eventList list playing the samples
 
 # Save current time
 
 timeZero = time.time()
 print("Time Zero: ", timeZero)
 
-# Save first timestamp (always 0 in timestamps list)
+# Variable for popping from eventList
 
-nextTimestamp = timestamps16th.pop(0)
+currentEvent = eventList.pop(0)
 
 # Iterate through timestamp sequence and play sample
 
@@ -113,17 +137,17 @@ while True:
     
     currentTime = time.time() - timeZero
 
-    # Play sample if next timestamp is passed
+    # Play sample if next timestamp from eventList is passed
 
-    if (currentTime >= nextTimestamp):
-        snare.play()
+    if (currentTime >= currentEvent['timestamp']):
+        currentEvent['instrument'].play()
 
         # Save new timestamp if timestamps list is not empty
 
-        if not timestamps16th:
+        if not eventList:
             break
         else:
-            nextTimestamp = timestamps16th.pop(0)
+            currentEvent = eventList.pop(0)
         
     # Wait for processor
 
