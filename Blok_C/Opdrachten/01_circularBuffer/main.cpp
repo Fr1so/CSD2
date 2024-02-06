@@ -8,24 +8,25 @@
 
 int main(int argc,char **argv)
 {
-  // set delay to a quarter cycle
-  int cycleFrameLength = 80;
-  CircBuffer circBuffer(200, cycleFrameLength / 4);
+  // with a 44100 samplerate and 882 frequency --> 50 samples for one cycle
+  float freq = 882;
+  // set delay to approximately a quarter cycle
+  CircBuffer circBuffer(200, 12);
 
-  // init square oscillator based on cycle lengths
-  float freq = (float) SAMPLERATE / cycleFrameLength;
+  circBuffer.logAllSettings();
+
   Square square(freq, SAMPLERATE);
-
   WriteToFile fileWriter("output.csv", true);
 
   // generate 200 samples
-  // TODO - write sum of output of both the square directly and the circBuffer to a file
+  // write sum of output of both the sine directly and the circBuffer to a file
   float squareSample = 0;
   for(int i = 0; i < 200; i++) {
     squareSample = square.genNextSample();
-    fileWriter.write(std::to_string(squareSample) + "\n");
-    // TODO - 'plugin' the cicbuffer
-
+    circBuffer.write(squareSample);
+    std::cout << circBuffer.read();
+    fileWriter.write(std::to_string(squareSample + circBuffer.read()) + "\n");
+    circBuffer.tick();
   }
 
   std::cout << "\n***** DONE ***** "
