@@ -1,8 +1,8 @@
 #include <iostream>
 #include <thread>
-#include "audioToFile.h"
+#include "../sharedCode/audio/audioToFile.h"
 #include "circBuffer.h"
-#include "square.h"
+#include "../sharedCode/oscillators/square.h"
 
 #define SAMPLERATE 44100
 

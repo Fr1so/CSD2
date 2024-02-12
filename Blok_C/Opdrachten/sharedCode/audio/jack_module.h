@@ -69,7 +69,6 @@ public:
 };
 
 
-
 /// Jack Client. Make an instance of this (only one per program) and provide it with a reference to your
 /// `AudioCallback` subclass via its constructor. After that call `init()` to start the Jack session.
 class JackModule {

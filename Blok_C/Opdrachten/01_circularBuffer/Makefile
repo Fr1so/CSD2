@@ -4,7 +4,7 @@ LDFLAGS=-ljack
 # the cpp files from the current project to include
 SRC_PROJECT = circBuffer.cpp main.cpp
 # the directory to the folder with the shared modules
-SHAREDCODE_PATH = ../../../CSD_23-24/blok2c/sharedCode/
+SHAREDCODE_PATH = ../sharedCode/
 # the modules to include
 MODULES = oscillators audio
 TARGET = example
