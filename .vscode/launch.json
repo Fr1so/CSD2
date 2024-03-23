@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/friso-linux/Documents/HKU/Jaar_2/CSD2/CSD_23-24/blok2b/session3/03_soundingSineClass",
-      "program": "/home/friso-linux/Documents/HKU/Jaar_2/CSD2/CSD_23-24/blok2b/session3/03_soundingSineClass/build/Debug/outDebug",
+      "cwd": "/home/friso-linux/Documents/HKU/temp/smfltest",
+      "program": "/home/friso-linux/Documents/HKU/temp/smfltest/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
