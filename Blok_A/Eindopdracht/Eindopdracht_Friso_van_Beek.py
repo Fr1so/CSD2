@@ -32,9 +32,9 @@ def getIntInput(textPrompt):
             if value > 0:
                 return value
             else:
-                print("Please enter a positive whole number.")
+                print("Please enter a positive whole number.\n")
         except ValueError:
-            print("Invalid input, please enter a positive whole number.")
+            print("Invalid input, please enter a positive whole number.\n")
 
 # Function to get a valid float input with error handling
 def getFloatInput(textPrompt):
@@ -44,9 +44,9 @@ def getFloatInput(textPrompt):
             if value > 0:
                 return value
             else: 
-                print("Please enter a positive floating number (i.e. 1.0 or 0.33).")
+                print("Please enter a positive floating number (i.e. 1.0 or 0.33).\n")
         except ValueError:
-            print("Invalid input, please enter a positive floating point number (i.e. 1.0 or 0.33).")
+            print("Invalid input, please enter a positive floating point number (i.e. 1.0 or 0.33).\n")
 
 
 # Welcome message
@@ -57,24 +57,26 @@ numPlaybackTimes = getIntInput("Please enter the amount of times you would like 
 
 print("Sample will be played", numPlaybackTimes, "times.\n")
 
-# Ask the user for bpm (default is 120.0, minimum is 33.0, hidden max is 999.0)
+# Ask the user for bpm (default is 120.0, minimum is 33.0, 'hidden' maximum is 999.0)
 bpm = 120.0
 
 correctBpmInput = False
 
 while (not correctBpmInput):
     userBpm = (input("Default bpm is 120.0, please enter the bpm to change it (minimum 33.0 bpm) or press enter to keep default bpm: "))
+
     if not userBpm:
         correctBpmInput = True
-        print("Bpm (", bpm,") hasn't changed.","\n")
+        print("Bpm (", bpm,") hasn't changed.\n")
     else:
         try:
-            bpm = float(userBpm)
-            if bpm > 33.0 and bpm < 999.0:
+            bpmValue = float(userBpm)
+            if 33.0 <= bpmValue <= 999.0:
+                bpm = bpmValue
                 correctBpmInput = True
-                print("Bpm is now", bpm,"\n")
-            else:
-                print("Please enter a positive bpm.")
+                print(f"The bpm is now {bpm}. \n")
+            else: 
+                print("Invalid bpm, please enter a bpm between 33.0 and 999.0.\n")
         except:
             print("Incorrect input, please enter a bpm.\n")
 
@@ -144,7 +146,7 @@ eventCreator(tsTime, instruments)
 
 # Save current time
 timeZero = time.time()
-print("Time Zero: ", timeZero)
+print("Time Zero: ", timeZero, "\n")
 
 # Variable for popping from eventList
 currentEvent = eventList.pop(0)
