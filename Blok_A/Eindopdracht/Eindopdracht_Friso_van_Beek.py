@@ -25,7 +25,6 @@ instruments = kick, snare, hihat
 # Ask the user for amount of times to play back sound
 
 # Function to get a valid integer input with error handling
-
 def getIntInput(textPrompt):
     while True:
         try:
@@ -38,7 +37,6 @@ def getIntInput(textPrompt):
             print("Invalid input, please enter a positive whole number.")
 
 # Function to get a valid float input with error handling
-
 def getFloatInput(textPrompt):
     while True:
         try:
@@ -52,30 +50,27 @@ def getFloatInput(textPrompt):
 
 
 # Welcome message
-
 print("Welcome to Friso's single sample sequencer.\n")
 
 # Ask the user for number of played samples
-
 numPlaybackTimes = getIntInput("Please enter the amount of times you would like for the sample to be played as an integer: ")
 
 print("Sample will be played", numPlaybackTimes, "times.\n")
 
-# Ask the user for bpm (default is 120.0)
-
+# Ask the user for bpm (default is 120.0, minimum is 33.0, hidden max is 999.0)
 bpm = 120.0
 
 correctBpmInput = False
 
 while (not correctBpmInput):
-    userBpm = (input("Default bpm is 120.0, please enter the bpm to change it or press enter to keep default bpm: "))
+    userBpm = (input("Default bpm is 120.0, please enter the bpm to change it (minimum 33.0 bpm) or press enter to keep default bpm: "))
     if not userBpm:
         correctBpmInput = True
-        print("Bpm is still", bpm,"\n")
+        print("Bpm (", bpm,") hasn't changed.","\n")
     else:
         try:
             bpm = float(userBpm)
-            if bpm > 0:
+            if bpm > 33.0 and bpm < 999.0:
                 correctBpmInput = True
                 print("Bpm is now", bpm,"\n")
             else:
@@ -84,11 +79,9 @@ while (not correctBpmInput):
             print("Incorrect input, please enter a bpm.\n")
 
 # Calculate 16th note duration
-
 sixteenthNote = (15 / bpm)
 
 # Ask the user for the specific duration of individual notes
-
 noteDurationList = []
 
 for amount in range(numPlaybackTimes):
@@ -120,7 +113,6 @@ durationToTimestamps16th(noteDurationList)
 print("Timestamps: \n", timestamps16th)
 
 # Convert 16th timestamps to actual time based on user inputted bpm
-
 tsTime = []
 
 def ts16thToTsTime(timestamps16th):
@@ -136,9 +128,8 @@ print("tsTime: \n", tsTime)
 
 # Creating events based on timestamps and instruments
 
-eventList = []
-
 # Create a random list based on instrument variable with a given timestamp from tsTime list
+eventList = []
 
 def eventCreator(xTsTime, instrument):
     for i in range(len(xTsTime)):
@@ -152,41 +143,32 @@ eventCreator(tsTime, instruments)
 # Loop through eventList list playing the samples
 
 # Save current time
-
 timeZero = time.time()
 print("Time Zero: ", timeZero)
 
 # Variable for popping from eventList
-
 currentEvent = eventList.pop(0)
 
 # Iterate through timestamp sequence and play sample
-
 print("Playing sample(s)...")
 
 while True:
-    
     currentTime = time.time() - timeZero
 
     # Play sample if next timestamp from eventList is passed
-
     if (currentTime >= currentEvent['timestamp']):
         currentEvent['instrument'].play()
 
         # Save new timestamp if timestamps list is not empty
-
         if not eventList:
             break
         else:
             currentEvent = eventList.pop(0)
         
     # Wait for processor
-
     time.sleep(0.001)
 
-
 # Ring out last sample before ending  
-
 time.sleep(1)
 
 print("Sequence complete!")
