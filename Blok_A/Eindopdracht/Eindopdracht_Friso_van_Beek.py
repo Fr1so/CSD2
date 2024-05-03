@@ -29,16 +29,24 @@ instruments = kick, snare, hihat
 def getIntInput(textPrompt):
     while True:
         try:
-            return int(input(textPrompt))
+            value =  int(input(textPrompt))
+            if value > 0:
+                return value
+            else:
+                print("Please enter a positive whole number.")
         except ValueError:
-            print("Invalid input, please enter a whole positive number.")
+            print("Invalid input, please enter a positive whole number.")
 
 # Function to get a valid float input with error handling
 
 def getFloatInput(textPrompt):
     while True:
         try:
-            return float(input(textPrompt))
+            value = float(input(textPrompt))
+            if value > 0:
+                return value
+            else: 
+                print("Please enter a positive floating number (i.e. 1.0 or 0.33).")
         except ValueError:
             print("Invalid input, please enter a positive floating point number (i.e. 1.0 or 0.33).")
 
@@ -67,8 +75,11 @@ while (not correctBpmInput):
     else:
         try:
             bpm = float(userBpm)
-            correctBpmInput = True
-            print("Bpm is now", bpm,"\n")
+            if bpm > 0:
+                correctBpmInput = True
+                print("Bpm is now", bpm,"\n")
+            else:
+                print("Please enter a positive bpm.")
         except:
             print("Incorrect input, please enter a bpm.\n")
 
