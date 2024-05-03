@@ -12,9 +12,9 @@ import random
 ######################
 ## Sample locations ##
 
-kick =  sa.WaveObject.from_wave_file("../Assets/kick_16bit.wav")
-snare =  sa.WaveObject.from_wave_file("../Assets/snare_16bit.wav")
-hihat =  sa.WaveObject.from_wave_file("../Assets/hihat_16bit.wav")
+kick = sa.WaveObject.from_wave_file("/home/friso-linux/Documents/HKU/Jaar_2/CSD2/Blok_A/Assets/kick_16bit.wav")
+snare = sa.WaveObject.from_wave_file("/home/friso-linux/Documents/HKU/Jaar_2/CSD2/Blok_A/Assets/snare_16bit.wav")
+hihat = sa.WaveObject.from_wave_file("/home/friso-linux/Documents/HKU/Jaar_2/CSD2/Blok_A/Assets/hihat_16bit.wav")
 
 instruments = kick, snare, hihat
 
@@ -22,17 +22,34 @@ instruments = kick, snare, hihat
 ################
 ## User Input ##
 
-print("Welcome to Friso's single sample sequencer.\n")
-
 # Ask the user for amount of times to play back sound
 
-while True:
-    try:
-        numPlaybackTimes = int(input("Please enter the amount of times you would like for the sample to be played as an integer: "))
-    except ValueError:
-        print("Please enter an integer (a whole, postive number).\n")
-    else:
-        break
+# Function to get a valid integer input with error handling
+
+def getIntInput(textPrompt):
+    while True:
+        try:
+            return int(input(textPrompt))
+        except ValueError:
+            print("Invalid input, please enter a whole positive number.")
+
+# Function to get a valid float input with error handling
+
+def getFloatInput(textPrompt):
+    while True:
+        try:
+            return float(input(textPrompt))
+        except ValueError:
+            print("Invalid input, please enter a positive floating point number (i.e. 1.0 or 0.33).")
+
+
+# Welcome message
+
+print("Welcome to Friso's single sample sequencer.\n")
+
+# Ask the user for number of played samples
+
+numPlaybackTimes = getIntInput("Please enter the amount of times you would like for the sample to be played as an integer: ")
 
 print("Sample will be played", numPlaybackTimes, "times.\n")
 
@@ -55,23 +72,19 @@ while (not correctBpmInput):
         except:
             print("Incorrect input, please enter a bpm.\n")
 
+# Calculate 16th note duration
+
 sixteenthNote = (15 / bpm)
 
 # Ask the user for the specific duration of individual notes
 
-noteDurationsList = []
+noteDurationList = []
 
 for amount in range(numPlaybackTimes):
-    while True:
-        try:
-            noteDuration = float(input("Please enter the duration of the notes as a float (for example: 1.0 = Quarter note, 0.5 = Eight note, 0.25 = Sixteenth note): "))   
-            noteDurationsList.append(noteDuration)
-        except ValueError:
-            print("Please enter a float (an unwhole number, with a dot, not a comma).\n")
-        else:
-            break
+    noteDuration = getFloatInput(f"Please enter a positive floating point number for note {amount+1 }: ")
+    noteDurationList.append(noteDuration)
 
-print("noteDurationsList: \n", noteDurationsList)
+print("noteDurationList: \n", noteDurationList)
 
 ##############################################################
 ## Note Time Duration Calculation and Timestamp Calculation ##
@@ -82,16 +95,16 @@ print("noteDurationsList: \n", noteDurationsList)
 
 timestamps16th = []
 
-def durationsToTimestamps16th(x_noteDurationsList):
+def durationToTimestamps16th(xNoteDurationList):
     
     timestamps16thSum = 0    
     timestamps16th.append(0)
 
-    for i in range(len(x_noteDurationsList)-1):
-        timestamps16thSum = timestamps16thSum + (x_noteDurationsList[i] * 4)
+    for i in range(len(xNoteDurationList)-1):
+        timestamps16thSum = timestamps16thSum + (xNoteDurationList[i] * 4)
         timestamps16th.append(timestamps16thSum)
     
-durationsToTimestamps16th(noteDurationsList)
+durationToTimestamps16th(noteDurationList)
 
 print("Timestamps: \n", timestamps16th)
 
@@ -116,9 +129,9 @@ eventList = []
 
 # Create a random list based on instrument variable with a given timestamp from tsTime list
 
-def eventCreator(x_tsTime, instrument):
-    for i in range(len(x_tsTime)):
-        eventList.append({'timestamp': x_tsTime[i], 'instrument': instrument[random.randint(0,2)]})
+def eventCreator(xTsTime, instrument):
+    for i in range(len(xTsTime)):
+        eventList.append({'timestamp': xTsTime[i], 'instrument': instrument[random.randint(0,2)]})
 
 eventCreator(tsTime, instruments)
 
@@ -137,6 +150,8 @@ print("Time Zero: ", timeZero)
 currentEvent = eventList.pop(0)
 
 # Iterate through timestamp sequence and play sample
+
+print("Playing sample(s)...")
 
 while True:
     
@@ -162,3 +177,5 @@ while True:
 # Ring out last sample before ending  
 
 time.sleep(1)
+
+print("Sequence complete!")

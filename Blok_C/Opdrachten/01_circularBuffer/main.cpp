@@ -1,39 +1,23 @@
 #include <iostream>
-#include <thread>
-#include "../sharedCode/audio/audioToFile.h"
 #include "circBuffer.h"
-#include "../sharedCode/oscillators/square.h"
 
-#define SAMPLERATE 44100
-
-int main(int argc,char **argv)
+int main()
 {
-  // with a 44100 samplerate and 882 frequency --> 50 samples for one cycle
-  float freq = 882;
+  // define size of buffer
+  int bufSize = 10;
   // set delay to approximately a quarter cycle
-  CircBuffer circBuffer(200, 12);
+  CircBuffer circBuffer = CircBuffer(bufSize);
 
-  circBuffer.logAllSettings();
+  std::cout << "Writing" << std::endl;
 
-  Square square(freq, SAMPLERATE);
-  WriteToFile fileWriter("output.csv", true);
-
-  // generate 200 samples
-  // write sum of output of both the sine directly and the circBuffer to a file
-  float squareSample = 0;
-  for(int i = 0; i < 200; i++) {
-    squareSample = square.genNextSample();
-    circBuffer.write(squareSample);
-    std::cout << circBuffer.read();
-    fileWriter.write(std::to_string(squareSample + circBuffer.read()) + "\n");
-    circBuffer.tick();
+  for (int i = 0; i < bufSize; i++) {
+    circBuffer.write(i);
   }
 
-  std::cout << "\n***** DONE ***** "
-    << "\nWrote the sum of the a sine oscillator and a "
-    << "delayed value to output.csv." << std::endl;
-
-  //end the program
-  return 0;
-
-} // main()
+  std::cout << "Reading" << std::endl;
+  
+  for (int j = 0; j < (bufSize * 3); j++) {
+    std::cout << circBuffer.read() << std::endl;
+  }
+  std::cout << "End of buffer" << std::endl;
+}

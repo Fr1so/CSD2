@@ -6,7 +6,7 @@ SRC_PROJECT = circBuffer.cpp main.cpp
 # the directory to the folder with the shared modules
 SHAREDCODE_PATH = ../sharedCode/
 # the modules to include
-MODULES = oscillators audio
+MODULES = oscillators audio utilities
 TARGET = example
 
 # append shared code path prefix to modules
