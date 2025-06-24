@@ -99,6 +99,30 @@ while (not correctBpmInput):
 
 meter_numerator, meter_denominator = getMeterInput()
 
+#########################
+## Event List Creation ##
+
+# Create a list of events with timestamps and instruments
+
+def generateEventList(meter_num, meter_den, bpm, repetitions, instruments):
+    eventList = []
+
+    # Duration of one quarter note
+    quarter_duration = 60 / bpm
+
+    # Convert meter to beats per bar (in quarter-note value)
+    if meter_den == 4:
+        beats_per_bar = meter_num
+    elif meter_den == 8:
+        beats_per_bar = meter_num / 2  # 7/8 is 3.5 quarter notes
+    else:
+        print("Unsupported meter denominator.")
+        return eventList
+
+    # Total duration of a bar in seconds
+    bar_duration = beats_per_bar * quarter_duration
+
+    return eventList
 
 #################
 ## Sample play ##
