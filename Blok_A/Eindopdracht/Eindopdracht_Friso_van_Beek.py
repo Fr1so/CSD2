@@ -13,6 +13,7 @@ import os
 ######################
 ## Sample locations ##
 
+# Define the base path of samples
 base_path = os.path.dirname(__file__)
 
 kick = sa.WaveObject.from_wave_file(os.path.join(base_path, "../../Blok_A/Assets/kick_16bit.wav"))
@@ -72,9 +73,6 @@ def getMeterInput():
 print("Welcome to Friso's single sample sequencer.\n")
 
 # Ask the user for number of played samples
-numPlaybackTimes = getIntInput("Please enter the amount of times you would like for the sample to be played as an integer: ")
-
-print("Sample will be played", numPlaybackTimes, "times.\n")
 
 # Ask the user for bpm (default is 120.0, minimum is 33.0, 'hidden' maximum is 999.0)
 bpm = 120.0
@@ -101,64 +99,6 @@ while (not correctBpmInput):
 
 meter_numerator, meter_denominator = getMeterInput()
 
-# Calculate 16th note duration
-sixteenthNote = (15 / bpm)
-
-# Ask the user for the specific duration of individual notes
-noteDurationList = []
-
-for amount in range(numPlaybackTimes):
-    noteDuration = getFloatInput(f"Please enter a positive floating point number for note {amount+1 }: ")
-    noteDurationList.append(noteDuration)
-
-print("noteDurationList: \n", noteDurationList)
-
-##############################################################
-## Note Time Duration Calculation and Timestamp Calculation ##
-
-# Enumerates through note length list of user and transforms to length appropriate to bpm of user
-# Duration of 1 gets converted to being a sixteenth note, instead of a quarter note.
-# Create a list of timestamps based on time durations
-
-timestamps16th = []
-
-def durationToTimestamps16th(xNoteDurationList):
-    
-    timestamps16thSum = 0    
-    timestamps16th.append(0)
-
-    for i in range(len(xNoteDurationList)-1):
-        timestamps16thSum = timestamps16thSum + (xNoteDurationList[i] * 4)
-        timestamps16th.append(timestamps16thSum)
-    
-durationToTimestamps16th(noteDurationList)
-
-print("Timestamps: \n", timestamps16th)
-
-# Convert 16th timestamps to actual time based on user inputted bpm
-tsTime = []
-
-def ts16thToTsTime(timestamps16th):
-    for ts in timestamps16th:
-        tsTime.append(sixteenthNote * ts)
-    
-ts16thToTsTime(timestamps16th)
-
-print("tsTime: \n", tsTime)
-
-######################
-## Event generation ##
-
-# Creating events based on timestamps and instruments
-
-# Create a random list based on instrument variable with a given timestamp from tsTime list
-eventList = []
-
-def eventCreator(xTsTime, instrument):
-    for i in range(len(xTsTime)):
-        eventList.append({'timestamp': xTsTime[i], 'instrument': instrument[random.randint(0,2)]})
-
-eventCreator(tsTime, instruments)
 
 #################
 ## Sample play ##
