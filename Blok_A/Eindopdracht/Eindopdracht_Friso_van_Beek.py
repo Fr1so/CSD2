@@ -7,14 +7,17 @@
 import simpleaudio as sa
 import time
 import random
+import os
 
 
 ######################
 ## Sample locations ##
 
-kick = sa.WaveObject.from_wave_file("/home/friso-linux/Documents/HKU/Jaar_2/CSD2/Blok_A/Assets/kick_16bit.wav")
-snare = sa.WaveObject.from_wave_file("/home/friso-linux/Documents/HKU/Jaar_2/CSD2/Blok_A/Assets/snare_16bit.wav")
-hihat = sa.WaveObject.from_wave_file("/home/friso-linux/Documents/HKU/Jaar_2/CSD2/Blok_A/Assets/hihat_16bit.wav")
+base_path = os.path.dirname(__file__)
+
+kick = sa.WaveObject.from_wave_file(os.path.join(base_path, "../../Blok_A/Assets/kick_16bit.wav"))
+snare = sa.WaveObject.from_wave_file(os.path.join(base_path, "../../Blok_A/Assets/snare_16bit.wav"))
+hihat = sa.WaveObject.from_wave_file(os.path.join(base_path, "../../Blok_A/Assets/hihat_16bit.wav"))
 
 instruments = kick, snare, hihat
 
