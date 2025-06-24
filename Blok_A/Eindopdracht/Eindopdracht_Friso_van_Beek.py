@@ -107,20 +107,34 @@ meter_numerator, meter_denominator = getMeterInput()
 def generateEventList(meter_num, meter_den, bpm, repetitions, instruments):
     eventList = []
 
-    # Duration of one quarter note
-    quarter_duration = 60 / bpm
+    # Calculate duration of one quarter note in seconds
+    quarterDuration = 60 / bpm
 
-    # Convert meter to beats per bar (in quarter-note value)
+    # Calculate beats per bar in quarter notes
     if meter_den == 4:
-        beats_per_bar = meter_num
+        beatsPerBar = meter_num
     elif meter_den == 8:
-        beats_per_bar = meter_num / 2  # 7/8 is 3.5 quarter notes
-    else:
-        print("Unsupported meter denominator.")
-        return eventList
+        beatsPerBar = meter_num / 2  # For example, 7/8 = 3.5 quarter notes
 
-    # Total duration of a bar in seconds
-    bar_duration = beats_per_bar * quarter_duration
+    # Calculate total duration of one bar in seconds
+    barDuration = beatsPerBar * quarterDuration
+
+    # Loop over the number of repetitions (bars)
+    for rep in range(repetitions):
+        timeZero = rep * barDuration  # start time of the current bar
+        currentTime = timeZero
+
+        # Calculate total number of 16th notes in the bar
+        numSixteenthNotes = int(beatsPerBar * 4) 
+
+        for i in range(numSixteenthNotes):
+            # Add a note with 60% probability
+            if random.random() < 0.6:
+                instrument = random.choice(instruments)
+                eventList.append({'timestamp': round(currentTime, 4), 'instrument': instrument})
+
+            # Advance current time by one sixteenth note duration
+            currentTime += quarterDuration / 4
 
     return eventList
 
@@ -133,11 +147,17 @@ def generateEventList(meter_num, meter_den, bpm, repetitions, instruments):
 timeZero = time.time()
 print("Time Zero: ", timeZero, "\n")
 
+
+# Generate the event list
+eventList = generateEventList(meter_numerator, meter_denominator, bpm, 4, instruments)
+
 # Variable for popping from eventList
 currentEvent = eventList.pop(0)
 
 # Iterate through timestamp sequence and play sample
 print("Playing sample(s)...")
+
+
 
 while True:
     currentTime = time.time() - timeZero
