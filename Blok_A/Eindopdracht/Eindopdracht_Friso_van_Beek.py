@@ -47,10 +47,26 @@ def getFloatInput(textPrompt):
             if value > 0:
                 return value
             else: 
-                print("Please enter a positive floating number (i.e. 1.0 or 0.33).\n")
+                print("Please enter a positive floating number (i.e. 1.0 or 0.33), here 1 is quarter note and 0.5 an eight note.\n")
         except ValueError:
             print("Invalid input, please enter a positive floating point number (i.e. 1.0 or 0.33).\n")
 
+# Function to get meter input from with error handling
+def getMeterInput():
+    print("Please select a meter from the options below:")
+    print("1 - 5/4")
+    print("2 - 7/8")
+    
+    while True:
+        meterChoice = input("Enter the number of your chosen meter: ")
+        if meterChoice == '1':
+            print("You selected 5/4 time.\n")
+            return 5, 4
+        elif meterChoice == '2':
+            print("You selected 7/8 time.\n")
+            return 7, 8
+        else:
+            print("Invalid input, please select 1 or 2.\n")
 
 # Welcome message
 print("Welcome to Friso's single sample sequencer.\n")
@@ -82,6 +98,8 @@ while (not correctBpmInput):
                 print("Invalid bpm, please enter a bpm between 33.0 and 999.0.\n")
         except:
             print("Incorrect input, please enter a bpm.\n")
+
+meter_numerator, meter_denominator = getMeterInput()
 
 # Calculate 16th note duration
 sixteenthNote = (15 / bpm)
