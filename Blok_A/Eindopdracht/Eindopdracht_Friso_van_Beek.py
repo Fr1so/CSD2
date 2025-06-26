@@ -61,8 +61,6 @@ def getMeterInput():
 # Welcome message
 print("Welcome to Friso's single sample sequencer.\n")
 
-# Ask the user for number of played samples
-
 # Ask the user for bpm (default is 120.0, minimum is 33.0, 'hidden' maximum is 999.0)
 bpm = 120.0
 
@@ -98,14 +96,13 @@ meter_numerator, meter_denominator = getMeterInput()
 def generateEventList(meter_num, meter_den, bpm, repetitions, instruments):
     eventList = []
 
-    # Calculate duration of one quarter note in seconds
     quarterDuration = 60 / bpm
 
     # Calculate beats per bar in quarter notes
     if meter_den == 4:
         beatsPerBar = meter_num
     elif meter_den == 8:
-        beatsPerBar = meter_num / 2  # For example, 7/8 = 3.5 quarter notes
+        beatsPerBar = meter_num / 2
 
     # Calculate total duration of one bar in seconds
     barDuration = beatsPerBar * quarterDuration
@@ -142,19 +139,28 @@ while True:
     # Generate the event list
     eventList = generateEventList(meter_numerator, meter_denominator, bpm, 4, instruments)
 
-    # Save current time
-    timeZero = time.time()
-    print("Time Zero: ", timeZero, "\n")
-    print("Playing sample(s)...")
+    while True:
+        # Save current time
+        timeZero = time.time()
+        print("Time Zero: ", timeZero, "\n")
+        print("Playing sample(s)...")
 
-    # Playback all events
-    for event in eventList:
-        waitTime = event['timestamp'] - (time.time() - timeZero)
-        if waitTime > 0:
-            time.sleep(waitTime)
-        event['instrument'].play()
+        # Playback all events
+        for event in eventList:
+            waitTime = event['timestamp'] - (time.time() - timeZero)
+            if waitTime > 0:
+                time.sleep(waitTime)
+            event['instrument'].play()
 
-    # Ring out last sample before ending  
-    time.sleep(1)
-    print("Sequence complete!")
-    break
+        # Ring out last sample before ending  
+        time.sleep(1)
+        print("Sequence complete!")
+        repeat = input("Do you want to play this sequence again? (y/n): ").strip().lower()
+        if repeat == 'y':
+            continue
+        else:
+            regenerate = input("Do you want to generate a new sequence? (y/n): ").strip().lower()
+            if regenerate == 'y':
+                break  # Break to regenerate sequence
+            else:
+                exit()  # Exit the program
