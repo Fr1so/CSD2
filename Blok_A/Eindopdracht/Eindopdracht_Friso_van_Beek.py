@@ -157,24 +157,30 @@ currentEvent = eventList.pop(0)
 # Iterate through timestamp sequence and play sample
 print("Playing sample(s)...")
 
-
-
+# Main loop
 while True:
-    currentTime = time.time() - timeZero
+    # Generate the event list
+    eventList = generateEventList(meter_numerator, meter_denominator, bpm, 4, instruments)
 
-    # Play sample if next timestamp from eventList is passed
-    if (currentTime >= currentEvent['timestamp']):
-        currentEvent['instrument'].play()
+    # Save current time
+    timeZero = time.time()
+    print("Time Zero: ", timeZero, "\n")
+    print("Playing sample(s)...")
 
-        # Save new timestamp if timestamps list is not empty
-        if not eventList:
-            break
+    # Playback
+    while eventList:
+        currentTime = time.time() - timeZero
+        currentEvent = eventList[0]
+
+        # Play sample if next timestamp from eventList is passed
+        if currentTime >= currentEvent['timestamp']:
+            play_obj = currentEvent['instrument'].play()
+            play_obj.wait_done()
+            eventList.pop(0)
+        # Wait for processor
         else:
-            currentEvent = eventList.pop(0)
-        
-    # Wait for processor
-    time.sleep(0.001)
-
+            time.sleep(0.001)
+    break
 # Ring out last sample before ending  
 time.sleep(1)
 
