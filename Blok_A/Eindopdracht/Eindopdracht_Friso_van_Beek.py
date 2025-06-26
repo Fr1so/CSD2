@@ -40,17 +40,6 @@ def getIntInput(textPrompt):
         except ValueError:
             print("Invalid input, please enter a positive whole number.\n")
 
-# Function to get a valid float input with error handling
-def getFloatInput(textPrompt):
-    while True:
-        try:
-            value = float(input(textPrompt))
-            if value > 0:
-                return value
-            else: 
-                print("Please enter a positive floating number (i.e. 1.0 or 0.33), here 1 is quarter note and 0.5 an eight note.\n")
-        except ValueError:
-            print("Invalid input, please enter a positive floating point number (i.e. 1.0 or 0.33).\n")
 
 # Function to get meter input from with error handling
 def getMeterInput():
@@ -79,8 +68,8 @@ bpm = 120.0
 
 correctBpmInput = False
 
-while (not correctBpmInput):
-    userBpm = (input("Default bpm is 120.0, please enter the bpm to change it (minimum 33.0 bpm) or press enter to keep default bpm: "))
+while not correctBpmInput:
+    userBpm = input("Default bpm is 120.0, please enter the bpm to change it (minimum 33.0 bpm) or press enter to keep default bpm: ")
 
     if not userBpm:
         correctBpmInput = True
@@ -88,14 +77,16 @@ while (not correctBpmInput):
     else:
         try:
             bpmValue = float(userBpm)
-            if 33.0 <= bpmValue <= 999.0:
+            if bpmValue < 33.0:
+                print("That bpm is too low. Please enter a bpm of 33.0 or higher.\n")
+            elif bpmValue > 999.0:
+                print("That bpm is too high. Please enter a bpm of 999.0 or lower.\n")
+            else:
                 bpm = bpmValue
                 correctBpmInput = True
                 print(f"The bpm is now {bpm}. \n")
-            else: 
-                print("Invalid bpm, please enter a bpm between 33.0 and 999.0.\n")
-        except:
-            print("Incorrect input, please enter a bpm.\n")
+        except ValueError:
+            print("Incorrect input, please enter a number.\n")
 
 meter_numerator, meter_denominator = getMeterInput()
 
@@ -128,6 +119,11 @@ def generateEventList(meter_num, meter_den, bpm, repetitions, instruments):
         numSixteenthNotes = int(beatsPerBar * 4) 
 
         for i in range(numSixteenthNotes):
+            # 90% chance to place a kick on the first beat of the bar
+            if i == 0 and random.random() < 0.9:
+                eventList.append({'timestamp': round(currentTime, 4), 'instrument': kick})
+                currentTime += quarterDuration / 4
+                continue
             # Add a note with 60% probability
             if random.random() < 0.6:
                 instrument = random.choice(instruments)
@@ -146,10 +142,6 @@ while True:
     # Generate the event list
     eventList = generateEventList(meter_numerator, meter_denominator, bpm, 4, instruments)
 
-    print("Number of events generated:", len(eventList))
-    for event in eventList[:5]:  # error testing, terminal gives 'zsh: segmentation fault' when printing all events
-            print(event)
-
     # Save current time
     timeZero = time.time()
     print("Time Zero: ", timeZero, "\n")
@@ -166,18 +158,3 @@ while True:
     time.sleep(1)
     print("Sequence complete!")
     break
-
-    # Testing single sample playback...
-    # if eventList:
-    #     testSample = eventList[0]['instrument']
-    #     play_obj = testSample.play()
-    #     play_obj.wait_done()
-    #     print("Test playback complete.")
-    # else:
-    #     print("No samples to play for test.")
-
-    # break
-# Ring out last sample before ending  
-# time.sleep(1)
-
-# print("Sequence complete!")
