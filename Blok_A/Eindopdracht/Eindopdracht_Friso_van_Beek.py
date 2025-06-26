@@ -141,22 +141,6 @@ def generateEventList(meter_num, meter_den, bpm, repetitions, instruments):
 #################
 ## Sample play ##
 
-# Loop through eventList list playing the samples
-
-# Save current time
-timeZero = time.time()
-print("Time Zero: ", timeZero, "\n")
-
-
-# Generate the event list
-eventList = generateEventList(meter_numerator, meter_denominator, bpm, 4, instruments)
-
-# Variable for popping from eventList
-currentEvent = eventList.pop(0)
-
-# Iterate through timestamp sequence and play sample
-print("Playing sample(s)...")
-
 # Main loop
 while True:
     # Generate the event list
