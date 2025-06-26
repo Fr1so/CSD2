@@ -146,6 +146,10 @@ while True:
     # Generate the event list
     eventList = generateEventList(meter_numerator, meter_denominator, bpm, 4, instruments)
 
+    print("Number of events generated:", len(eventList))
+    for event in eventList[:5]:  # error testing, terminal gives 'zsh: segmentation fault' when printing all events
+            print(event)
+
     # Save current time
     timeZero = time.time()
     print("Time Zero: ", timeZero, "\n")
