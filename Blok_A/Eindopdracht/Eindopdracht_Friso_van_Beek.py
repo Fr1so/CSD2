@@ -156,18 +156,31 @@ while True:
     print("Playing sample(s)...")
 
     # Playback
-    while eventList:
-        currentTime = time.time() - timeZero
-        currentEvent = eventList[0]
+    # while eventList:
+    #     currentTime = time.time() - timeZero
+    #     currentEvent = eventList[0]
+    #
+    #     # Play sample if next timestamp from eventList is passed
+    #     if currentTime >= currentEvent['timestamp']:
+    #         play_obj = currentEvent['instrument'].play()
+    #         play_obj.wait_done()
+    #         eventList.pop(0)
+    #     # Wait for processor
+    #     else:
+    #         time.sleep(0.001)
+    # break
 
-        # Play sample if next timestamp from eventList is passed
-        if currentTime >= currentEvent['timestamp']:
-            play_obj = currentEvent['instrument'].play()
-            play_obj.wait_done()
-            eventList.pop(0)
-        # Wait for processor
-        else:
-            time.sleep(0.001)
+    # Testing single sample playback
+    print("Testing single sample playback...")
+
+    if eventList:
+        testSample = eventList[0]['instrument']
+        play_obj = testSample.play()
+        play_obj.wait_done()
+        print("Test playback complete.")
+    else:
+        print("No samples to play for test.")
+
     break
 # Ring out last sample before ending  
 time.sleep(1)
