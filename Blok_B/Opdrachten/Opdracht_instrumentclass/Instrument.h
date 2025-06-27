@@ -8,13 +8,13 @@ class Instrument {
         std::string sound;
 
     public:
-        // Constructor that loads the sound
+        // Constructor that loads the 'sound'
         Instrument(const std::string& sound);
 
         // Print sound once
         void play() const;
 
-        // Roll the sound a number of times
+        // Roll the sound a number of times to the console
         void roll(int repetitions) const;
 };
 
