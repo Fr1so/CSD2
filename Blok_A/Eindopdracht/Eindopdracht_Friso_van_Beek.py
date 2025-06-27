@@ -121,10 +121,18 @@ def generateEventList(meter_num, meter_den, bpm, repetitions, instruments):
                 eventList.append({'timestamp': round(currentTime, 4), 'instrument': kick})
                 currentTime += quarterDuration / 4
                 continue
-            # Add a note with 60% probability
-            if random.random() < 0.6:
-                instrument = random.choice(instruments)
-                eventList.append({'timestamp': round(currentTime, 4), 'instrument': instrument})
+
+            # Snare emphasis on beats 2 and 4 (approximate positions in 16th notes)
+            is_snare_beat = (i == 4 or i == 8)
+            if is_snare_beat:
+                if random.random() < 0.7:
+                    eventList.append({'timestamp': round(currentTime, 4), 'instrument': snare})
+                elif random.random() < 0.5:
+                    eventList.append({'timestamp': round(currentTime, 4), 'instrument': hihat})
+            else:
+                if random.random() < 0.6:
+                    instrument = random.choice(instruments)
+                    eventList.append({'timestamp': round(currentTime, 4), 'instrument': instrument})
 
             # Advance current time by one sixteenth note duration
             currentTime += quarterDuration / 4
