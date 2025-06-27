@@ -8,6 +8,9 @@ import simpleaudio as sa
 import time
 import random
 import os
+import mido
+import platform
+from mido import Message, MidiFile, MidiTrack, bpm2tempo
 
 
 ######################
@@ -142,6 +145,55 @@ def prompt_sequence_settings(bpm):
     meter_numerator, meter_denominator = getMeterInput()
     return bpm, meter_numerator, meter_denominator
 
+# MIDI export mapping and function
+midi_mapping = {
+    kick: 36,   # MIDI note for kick drum
+    snare: 38,  # MIDI note for snare drum
+    hihat: 42   # MIDI note for hi-hat
+}
+
+def export_to_midi(eventList, bpm):
+    mid = MidiFile()
+    track = MidiTrack()
+    mid.tracks.append(track)
+    mid.ticks_per_beat = 480
+
+    # Set tempo
+    tempo = bpm2tempo(bpm)
+    track.append(mido.MetaMessage('set_tempo', tempo=tempo, time=0))
+    track.append(Message('program_change', program=0, time=0))
+
+    last_tick = 0
+    for event in sorted(eventList, key=lambda e: e['timestamp']):
+        note = midi_mapping.get(event['instrument'], 36)
+        tick = int(event['timestamp'] * (bpm / 60) * mid.ticks_per_beat)
+        delta_time = tick - last_tick
+        last_tick = tick
+        track.append(Message('note_on', note=note, velocity=100, time=delta_time))
+        track.append(Message('note_off', note=note, velocity=64, time=100))
+
+    # Prompt user for saving
+    # Determine Downloads folder cross-platform
+    system = platform.system()
+    if system == "Windows":
+        downloads_path = os.path.join(os.environ.get("USERPROFILE", os.path.expanduser("~")), "Downloads")
+    elif system == "Darwin":  # macOS
+        downloads_path = os.path.join(os.path.expanduser("~"), "Downloads")
+    elif system == "Linux":
+        downloads_path = os.path.join(os.path.expanduser("~"), "Downloads")
+    else:
+        downloads_path = os.path.join(os.path.expanduser("~"), "Downloads")
+    # Determine base name
+    base_name = input("Enter filename for MIDI (without extension) or press enter for 'irregular_beat': ").strip() or "irregular_beat"
+    # Build a unique filename if needed
+    export_path = os.path.join(downloads_path, f"{base_name}.mid")
+    count = 1
+    while os.path.exists(export_path):
+        export_path = os.path.join(downloads_path, f"{base_name}({count}).mid")
+        count += 1
+    mid.save(export_path)
+    print(f"MIDI file saved to: {export_path}\n")
+
 # Main loop
 while True:
     bpm, meter_numerator, meter_denominator = prompt_sequence_settings(bpm)
@@ -152,7 +204,7 @@ while True:
         # Save current time
         timeZero = time.time()
         print("Playing sample(s)...")
-
+        
         # Playback all events
         for event in eventList:
             waitTime = event['timestamp'] - (time.time() - timeZero)
@@ -163,6 +215,16 @@ while True:
         # Ring out last sample before ending  
         time.sleep(1)
         print("Sequence complete!")
+        # Ask to export sequence to MIDI
+        while True:
+            export = input("Do you want to export this sequence as MIDI? (y/n): ").strip().lower()
+            if export == 'y':
+                export_to_midi(eventList, bpm)
+                break
+            elif export == 'n':
+                break
+            else:
+                print("Invalid input. Please enter 'y' or 'n'.\n")
         while True:
             repeat = input("Do you want to play this sequence again? (y/n): ").strip().lower()
             if repeat == 'y':
@@ -171,7 +233,6 @@ while True:
                 break  # Ask about generating a new sequence
             else:
                 print("Invalid input. Please enter 'y' or 'n'.\n")
-
         if repeat == 'n':
             while True:
                 regenerate = input("Do you want to generate a new sequence? (y/n): ").strip().lower()
