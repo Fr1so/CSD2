@@ -61,32 +61,11 @@ def getMeterInput():
 # Welcome message
 print("Welcome to Friso's single sample sequencer.\n")
 
-# Ask the user for bpm (default is 120.0, minimum is 33.0, 'hidden' maximum is 999.0)
+# Initialize bpm input flag
+correctBpmInput = True
+
 bpm = 120.0
 
-correctBpmInput = False
-
-while not correctBpmInput:
-    userBpm = input("Default bpm is 120.0, please enter the bpm to change it (minimum 33.0 bpm) or press enter to keep default bpm: ")
-
-    if not userBpm:
-        correctBpmInput = True
-        print("Bpm (", bpm,") hasn't changed.\n")
-    else:
-        try:
-            bpmValue = float(userBpm)
-            if bpmValue < 33.0:
-                print("That bpm is too low. Please enter a bpm of 33.0 or higher.\n")
-            elif bpmValue > 999.0:
-                print("That bpm is too high. Please enter a bpm of 999.0 or lower.\n")
-            else:
-                bpm = bpmValue
-                correctBpmInput = True
-                print(f"The bpm is now {bpm}. \n")
-        except ValueError:
-            print("Incorrect input, please enter a number.\n")
-
-meter_numerator, meter_denominator = getMeterInput()
 
 #########################
 ## Event List Creation ##
@@ -142,15 +121,36 @@ def generateEventList(meter_num, meter_den, bpm, repetitions, instruments):
 #################
 ## Sample play ##
 
+
+# Function to prompt for BPM and meter settings
+def prompt_sequence_settings(bpm):
+    while True:
+        userBpm = input(f"Current bpm is {bpm}. Enter a new bpm (min 33.0) or press enter to keep: ").strip()
+        if userBpm == "":
+            print(f"Bpm ({bpm}) hasn't changed.\n")
+            break
+        try:
+            bpmValue = float(userBpm)
+            if 33.0 <= bpmValue <= 999.0:
+                bpm = bpmValue
+                print(f"The bpm is now {bpm}.\n")
+                break
+            else:
+                print("Please enter a bpm between 33.0 and 999.0.\n")
+        except ValueError:
+            print("Invalid input. Please enter a number.\n")
+    meter_numerator, meter_denominator = getMeterInput()
+    return bpm, meter_numerator, meter_denominator
+
 # Main loop
 while True:
+    bpm, meter_numerator, meter_denominator = prompt_sequence_settings(bpm)
     # Generate the event list
     eventList = generateEventList(meter_numerator, meter_denominator, bpm, 4, instruments)
 
     while True:
         # Save current time
         timeZero = time.time()
-        print("Time Zero: ", timeZero, "\n")
         print("Playing sample(s)...")
 
         # Playback all events
@@ -163,12 +163,23 @@ while True:
         # Ring out last sample before ending  
         time.sleep(1)
         print("Sequence complete!")
-        repeat = input("Do you want to play this sequence again? (y/n): ").strip().lower()
-        if repeat == 'y':
-            continue
-        else:
-            regenerate = input("Do you want to generate a new sequence? (y/n): ").strip().lower()
-            if regenerate == 'y':
-                break  # Break to regenerate sequence
+        while True:
+            repeat = input("Do you want to play this sequence again? (y/n): ").strip().lower()
+            if repeat == 'y':
+                break  # Replays current sequence
+            elif repeat == 'n':
+                break  # Ask about generating a new sequence
             else:
-                exit()  # Exit the program
+                print("Invalid input. Please enter 'y' or 'n'.\n")
+
+        if repeat == 'n':
+            while True:
+                regenerate = input("Do you want to generate a new sequence? (y/n): ").strip().lower()
+                if regenerate == 'y':
+                    bpm, meter_numerator, meter_denominator = prompt_sequence_settings(bpm)
+                    break  # Break to regenerate sequence with new settings
+                elif regenerate == 'n':
+                    print("\nThank you for using the Irregular Beat Generator!")
+                    exit()  # Exit the program
+                else:
+                    print("Invalid input. Please enter 'y' or 'n'.\n")
